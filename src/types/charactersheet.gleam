@@ -2,7 +2,17 @@
 //// 
 
 ///type that contains the individual parts of a character sheet
-pub type CharacterSheet
+pub type CharacterSheet {
+  CharacterSheet(
+    background: Background,
+    abilities: Abilities,
+    main_stats: MainStats,
+  )
+}
+
+pub type MainStats {
+  MainStats(health_points: Int, speed: Int, toughness: Int, soul: Int)
+}
 
 ///type that describes the characters background
 pub type Background {
@@ -67,21 +77,58 @@ pub type Species {
     base_toughness: Int,
     base_soul: Int,
     base_speed: Int,
-    modifier_courage: Int,
-    modifier_intelligence: Int,
-    modifier_intuition: Int,
-    modifier_charisma: Int,
-    modifier_dexterity: Int,
-    modifier_agility: Int,
-    modifier_constitution: Int,
-    modifier_strength: Int,
-    intrinsic_perks: String,
-    intrinsic_flaws: String,
-    typical_perks: String,
-    typical_flaws: String,
-    atypical_perks: String,
-    atypical_flaws: String,
+    courage: AbilityModifier,
+    intelligence: AbilityModifier,
+    intuition: AbilityModifier,
+    charisma: AbilityModifier,
+    dexterity: AbilityModifier,
+    agility: AbilityModifier,
+    constitution: AbilityModifier,
+    strength: AbilityModifier,
+    required_perks: List(Perk),
+    required_flaws: List(Flaw),
+    prohibited_perks: List(Perk),
+    prohibited_flaws: List(Flaw),
+    recommended_perks: List(Perk),
+    recommended_flaws: List(Flaw),
+    discouraged_perks: List(Perk),
+    discouraged_flaws: List(Flaw),
   )
 }
 
-pub type Profession
+pub type Perk {
+  Perk
+}
+
+pub type Flaw {
+  Flaw
+}
+
+pub type Abilities {
+  Abilities(
+    courage: AbilityScore,
+    intelligence: AbilityScore,
+    intuition: AbilityScore,
+    charisma: AbilityScore,
+    dexterity: AbilityScore,
+    agility: AbilityScore,
+    constitution: AbilityScore,
+    strength: AbilityScore,
+  )
+}
+
+///defines ability score type
+pub opaque type AbilityScore {
+  AbilityScore(score: Int)
+}
+
+pub fn new_ability_score(score: Int) -> AbilityScore {
+  case score {
+    score if score <= 0 -> panic as "ability score can't be 0 or smaller"
+    score if score > 20 -> panic as "ability score can't be higher than 20"
+    _ -> AbilityScore(score)
+  }
+}
+
+pub type AbilityModifier =
+  fn(AbilityScore) -> AbilityScore
