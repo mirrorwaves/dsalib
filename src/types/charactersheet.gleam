@@ -1,6 +1,8 @@
 ////module containing the components of a character sheet 
 //// 
 
+import types/profession.{type Profession}
+
 ///type that contains the individual parts of a character sheet
 pub type CharacterSheet {
   CharacterSheet(
